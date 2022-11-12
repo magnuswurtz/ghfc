@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {type PropsWithChildren,useState} from 'react';
+import React, {type PropsWithChildren,useState, useContext} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -22,15 +22,17 @@ import {
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
+import { endLocationContext } from './contexts/endLocationContext';
 import MapScreen from './screens/MapScreen';
 import NavigationScreen from './screens/NavigationScreen';
 
+
+
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const [endLocationChosen, setEndLocationChosen] = useState(false);
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const backgroundStyle = {backgroundColor: isDarkMode ? Colors.darker : Colors.lighter};
+  const [location,setLocation] = useState({lat:0,lon:0});
+  const [navigate,setNavigate] = useState(false);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -38,10 +40,15 @@ const App = () => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      {endLocationChosen ? 
+      <endLocationContext.Provider value={{location,navigate,setLocation,setNavigate}} >
+      {navigate ?
       <NavigationScreen></NavigationScreen>
-      : <MapScreen></MapScreen>
+      : 
+      <MapScreen></MapScreen>
+
+
     }
+    </endLocationContext.Provider>
     </SafeAreaView>
   );
 };
