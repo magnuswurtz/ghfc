@@ -22,7 +22,7 @@ import {
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
-import { endLocationContext } from './contexts/endLocationContext';
+import { locationContext } from './contexts/LocationContext';
 import MapScreen from './screens/MapScreen';
 import NavigationScreen from './screens/NavigationScreen';
 
@@ -31,7 +31,8 @@ import NavigationScreen from './screens/NavigationScreen';
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {backgroundColor: isDarkMode ? Colors.darker : Colors.lighter};
-  const [location,setLocation] = useState({lat:0,lon:0});
+  const [endLocation,setEndLocation] = useState({lat:0,lon:0});
+  const [currentLocation,setCurrentLocation] = useState({lat:0,lon:0})
   const [navigate,setNavigate] = useState(false);
 
   return (
@@ -40,7 +41,7 @@ const App = () => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <endLocationContext.Provider value={{location,navigate,setLocation,setNavigate}} >
+      <locationContext.Provider value={{endLocation,currentLocation,navigate,setEndLocation,setCurrentLocation,setNavigate}} >
       {navigate ?
       <NavigationScreen></NavigationScreen>
       : 
@@ -48,7 +49,7 @@ const App = () => {
 
 
     }
-    </endLocationContext.Provider>
+    </locationContext.Provider>
     </SafeAreaView>
   );
 };
